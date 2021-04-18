@@ -1,26 +1,31 @@
-import React from 'react'
+
+import React from 'react';
+
 
 const Shelf = (props) => {
-    const handleChange = (value, id, index) => {
-        props.onUpdate(value, id , index, props.currentBookShelf)
+
+    const handleChange = (book, shelf ) => {
+        props.onUpdate(book, shelf, props.currentBookShelf)
     }
+
     return(
         <div className="bookshelf">
             <h2 className="bookshelf-title">{props.heading}</h2>
             <div className="bookshelf-books">
                 <ol className="books-grid">
-                    {props.bookSelf.map((value)=>(
+                    {props.books.map((value)=>(
+                        props.bookSelf === value.shelf ? 
                         <li key={value.id}>     
                             <div className="book">
                                 <div className="book-top">
                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${value.imageLinks.smallThumbnail})` }}></div>
                                 <div className="book-shelf-changer">
-                                    <select>
-                                    <option value="move" disabled>Move to...</option>
-                                    <option value="currentlyReading" onClick={(e)=>handleChange(e.target.value, value.id, value.index)}>Currently Reading</option>
-                                    <option value="wantToRead" onClick={(e)=>handleChange(e.target.value, value.id, value.index)}>Want to Read</option>
-                                    <option value="read" onClick={(e)=>handleChange(e.target.value, value.id, value.index)}>Read</option>
-                                    <option value="none" >None</option>
+                                    <select onChange={(e)=>handleChange(value.id, e.target.value)} defaultValue={props.bookSelf}>       
+                                        <option value="move" disabled>Move to...</option>
+                                        <option value="currentlyReading">Currently Reading</option>
+                                        <option value="wantToRead" >Want to Read</option>
+                                        <option value="read" >Read</option>
+                                        <option value="none" >None</option>
                                     </select>
                                 </div>
                                 </div>
@@ -30,7 +35,7 @@ const Shelf = (props) => {
                                 ))}
                                 
                             </div>
-                        </li> 
+                        </li> : null
                     ))}   
                 </ol>
             </div>
