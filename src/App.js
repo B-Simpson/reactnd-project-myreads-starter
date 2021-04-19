@@ -91,30 +91,6 @@ class BooksApp extends React.Component {
       
     })
 
-
-    // //Remove the book from the shelf 
-    // if(currentBookShelf !== value){
-    //   this.setState({
-    //     [`${currentBookShelf}`]: 
-    //     [...this.state[`${currentBookShelf}`].filter( 
-    //       el => {
-    //         return el.id !== id
-    //       }
-    //     )]
-    //   })
-    // }
-    
-    // //Move the book to the newly selected shelf
-    // if(!this.state[`${value}`].some(books => books.id === id)){
-    //   this.setState({
-    //     [`${value}`]: 
-    //     [...this.state[`${value}`].concat( 
-    //       this.state.books.filter(el => {
-    //         return el.id === id
-    //       })
-    //     )]
-    //   })
-    // }
   }
 
   render() {
