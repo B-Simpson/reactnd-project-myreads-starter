@@ -61,33 +61,34 @@ class BooksApp extends React.Component {
     }
   }   
 
-  handleChange(book, shelf){
-    
-    BooksAPI.update(book, shelf)
-    .then((books)=>{
-      const updatedBooks = this.state.books.map(b => {
-        if (b.id === book) {
-          b.shelf = shelf; 
-        }
-        return b;
-      });
 
-      this.setState({books: updatedBooks})
-
-      this.setState((currentState) => 
-        ({ books: currentState.books.filter((b) => 
-            b.id !== book).concat([book]) 
-          })
-      );
-
-      
-      setTimeout(()=> {
-        console.log(books)
-      },500)
-      
+  handleChange = (book, shelf) => {
+    let bookToChange = book;
+    BooksAPI
+        .update(bookToChange, shelf)     
+        .then(() => {
+            shelf === 'none' ? console.log("Removed from Shelf!", "warning", 2300) : console.log("Success!", "success", 2300);
+            bookToChange.shelf = shelf;
     })
-
   }
+
+
+  // handleChange(book, shelf){
+
+  //   BooksAPI.update(book,shelf).then(
+  //     this.setState((currentState) => ({
+  //         books: currentState.books.filter((b) => {
+  //           if (b.id === book) {
+  //             b.shelf = shelf; 
+  //             console.log(currentState.books)
+  //           }
+  //         return b;
+  //       })
+        
+  //       // .concat({ ...book, shelf }),
+  //     }))
+  //   );  
+  // }
 
   render() {
 

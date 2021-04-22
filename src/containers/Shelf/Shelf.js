@@ -5,7 +5,7 @@ import React from 'react';
 const Shelf = (props) => {
 
     const handleChange = (book, shelf ) => {
-        props.onUpdate(book, shelf, props.currentBookShelf)
+        props.onUpdate(book, shelf)
     }
 
     return(

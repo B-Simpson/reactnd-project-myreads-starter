@@ -1,4 +1,3 @@
-
 const api = "https://reactnd-books-api.udacity.com"
 
 
@@ -30,7 +29,14 @@ export const update = (book, shelf) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ shelf })
-  }).then(res => res.json())
+  }).then( 
+    (res) => {
+      console.log('update', res)
+      return res.json()
+    }
+  ).catch((err) =>
+    console.log('update - catch', err)
+  )
 
 export const search = (query) =>
   fetch(`${api}/search`, {
