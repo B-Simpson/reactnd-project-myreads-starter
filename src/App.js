@@ -37,58 +37,30 @@ class BooksApp extends React.Component {
     BooksAPI.getAll()
     .then((books)=> {
       this.setState({books: books})   
-      this.sortBooks();      
     }) 
     setTimeout(()=> {
       this.setState({isLoading: false})
-      // console.log(this.state.books) 
-    },1000)
-    
-  }
-
-  //Push books to corret array.
-  sortBooks(){  
-    for(let current of this.state.books){
-      if(current.shelf === "currentlyReading"){
-        this.setState({currentlyReading: [...this.state.currentlyReading, current]})
-      }
-      if(current.shelf === "wantToRead"){
-        this.setState({wantToRead: [...this.state.wantToRead, current]})
-      }
-      if(current.shelf === "read"){
-        this.setState({read: [...this.state.read, current]})
-      }
-    }
-  }   
-
-
-  handleChange = (book, shelf) => {
-    let bookToChange = book;
-    BooksAPI
-        .update(bookToChange, shelf)     
-        .then(() => {
-            shelf === 'none' ? console.log("Removed from Shelf!", "warning", 2300) : console.log("Success!", "success", 2300);
-            bookToChange.shelf = shelf;
-    })
+    },1000)   
   }
 
 
-  // handleChange(book, shelf){
+  handleChange = async (book, shelf)=>{
 
-  //   BooksAPI.update(book,shelf).then(
-  //     this.setState((currentState) => ({
-  //         books: currentState.books.filter((b) => {
-  //           if (b.id === book) {
-  //             b.shelf = shelf; 
-  //             console.log(currentState.books)
-  //           }
-  //         return b;
-  //       })
-        
-  //       // .concat({ ...book, shelf }),
-  //     }))
-  //   );  
-  // }
+    await BooksAPI.update(book,shelf).then(
+      this.setState((currentState) => ({
+          books: currentState.books.filter((b) => {
+            if (b.id === book.id) {
+              b.shelf = shelf;  
+            }
+          return b;
+        }) 
+      }))
+    );
+    await BooksAPI.getAll()
+    .then((books)=> {
+      this.setState({books: books})   
+    }) 
+  }
 
   render() {
 

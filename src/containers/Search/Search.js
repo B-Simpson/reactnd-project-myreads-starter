@@ -12,6 +12,7 @@ class Search extends Component {
         query: "",
         books: [],
         allCurrentBooks: this.props.books,
+        error: false
     }
 
     updateSearch = (query) => {
@@ -19,27 +20,24 @@ class Search extends Component {
         this.setState(() => ({
             query: query.trim()
         }))
-
-        const search = () => BooksAPI.search(query)
+        if(query !== ""){
+            const search = () => BooksAPI.search(query)      
             .then((books) => {
-                if (books.error !== "") {
+                if (books !== "") {
                     this.setState({ books: [...books] })
                 }
             })
-
-        async function searchResults() {
-            await search();
+            async function searchResults() {
+                await search();
+            }
+            searchResults()  
+        }else{
+            this.setState({ books: [] })
         }
-        searchResults()
-
-    }
-
-    clearQuery = () => {
-        this.updateSearch('')
     }
 
     handleChange = (book, shelf) => {
-        this.props.onUpdate(book, shelf, this.props.currentBookShelf)
+        this.props.onUpdate(book, shelf)
     }
 
     render() {
@@ -64,7 +62,7 @@ class Search extends Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {showingBooks.map((value, index) => {
+                        {showingBooks !== null ? showingBooks.map((value, index) => {
                             const currentBooksOnShelf = this.props.books.find(
                                 ({id}) => value.id === id
                             );
@@ -73,10 +71,16 @@ class Search extends Component {
                             <li key = { value.id }>
                                 <div className="book">
                                     <div className="book-top">
-                                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${value.imageLinks.smallThumbnail})` }}></div>
+                                        <div className="book-cover"
+                                            style={{ 
+                                                width: 128, 
+                                                height: 193, 
+                                                backgroundImage: value.imageLinks != null ? `url(${value.imageLinks.smallThumbnail})` : null
+                                            }}>
+                                        </div>
                                         <div className="book-shelf-changer">
                                             <select
-                                                onChange={(e) => this.handleChange(value.id, e.target.value)}
+                                                onChange={(e) => this.handleChange(value, e.target.value)}
                                                 defaultValue={shelf}
                                             >
                                                 <option value="move" disabled>Move to...</option>
@@ -88,11 +92,11 @@ class Search extends Component {
                                         </div>
                                     </div>
                                     <div className="book-title">{value.title}</div>
-                                    <div key={index} className="book-authors">{value.authors}</div>
+                                    <div key={index} className="book-authors">{value.authors != null ? value.authors : null}</div>
                                 </div>
                             </li>
                             )
-                        })} 
+                        }) : null} 
                     </ol>
             </div>
             </div >
