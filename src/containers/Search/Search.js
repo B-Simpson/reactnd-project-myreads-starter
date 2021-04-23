@@ -20,12 +20,18 @@ class Search extends Component {
         this.setState(() => ({
             query: query.trim()
         }))
+
         if(query !== ""){
             const search = () => BooksAPI.search(query)      
             .then((books) => {
-                if (books !== "") {
+                if (books !== "" && !books.error) {
                     this.setState({ books: [...books] })
+                }else if(books.error){
+                    this.setState({ books: [] })
                 }
+            })
+            .catch((err)=> {
+                console.log(err)
             })
             async function searchResults() {
                 await search();
